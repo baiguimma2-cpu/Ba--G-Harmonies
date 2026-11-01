@@ -11,9 +11,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - run: cmake -B build -DCMAKE_BUILD_TYPE=Release
-      - run: cmake --build build --config Release --parallel
+      - name: Dezipper
+        shell: bash
+        run: cmake -E tar xf *.zip
+      - name: Compiler
+        shell: bash
+        working-directory: BadiBadiaHarmony
+        run: |
+          cmake -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release --parallel
       - uses: actions/upload-artifact@v4
         with:
           name: BadiBadiaHarmony-${{ matrix.os }}
-          path: build/BadiBadiaHarmony_artefacts/Release
+          path: BadiBadiaHarmony/build/BadiBadiaHarmony_artefacts/Release
